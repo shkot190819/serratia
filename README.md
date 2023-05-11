@@ -33,6 +33,16 @@ ids = record['IdList']
 ```
 2449 ids (Date of access: 13.03.23)  
 
+A python script (script.py) was written to download genomic assemblies from GenBank.
+
+#### Construction of a phylogenetic tree based on a distance matrix  
+A distance matrix between genomic assemblies was constructed using sourmash (doi: 10.21105/joss.00027).  
+Sourmash is a Python package that quickly compares potentially very large sets of DNA and protein sequences. This functionality can be used to, for example, cluster transcriptomes or genomes, to identify the taxonomy of new isolate or metagenome-assembled genomes, or to determine the taxonomic composition of a new metagenome sequence by comparing it against a database of reference genomes.  
+Sourmash signatures contain one or multiple sub-sampled representations of DNA or protein sequences (FracMinHash sketches). Each FracMinHash sketch contains hashes (and optionally, hash abundances) that represent a subset of k-mers from the original sequences. The sourmash sketch command consistently subsamples k-mers across different sequences, so we can compare (e.g. intersect) sketches to understand sequence similarity. The command line function sourmash compare estimates similarity and containment metrics.
+```
+> /home/e_sukhinina/.local/bin/sourmash sketch dna -p scaled=1000,k=31 ../assemblies/*.fna.gz
+> /home/e_sukhinina/.local/bin/sourmash compare -p 32 ./signatures/*.sig -o ./sourmash_results/serra_cmp --distance-matrix --ksize 31 --csv ./sourmash_results/dist_matrix.csv
+```
 
 
 
