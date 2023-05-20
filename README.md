@@ -35,7 +35,7 @@ ids = record['IdList']
 
 A python script (script.py) was written to download genomic assemblies from GenBank.
 
-#### Construction of a phylogenetic tree based on a distance matrix  
+#### Reconstruction of a phylogenetic tree based on a distance matrix  
 A distance matrix between genomic assemblies was constructed using sourmash (doi: 10.21105/joss.00027).  
 Sourmash is a Python package that quickly compares potentially very large sets of DNA and protein sequences. This functionality can be used to, for example, cluster transcriptomes or genomes, to identify the taxonomy of new isolate or metagenome-assembled genomes, or to determine the taxonomic composition of a new metagenome sequence by comparing it against a database of reference genomes.  
 Sourmash signatures contain one or multiple sub-sampled representations of DNA or protein sequences (FracMinHash sketches). Each FracMinHash sketch contains hashes (and optionally, hash abundances) that represent a subset of k-mers from the original sequences. The sourmash sketch command consistently subsamples k-mers across different sequences, so we can compare (e.g. intersect) sketches to understand sequence similarity. The command line function sourmash compare estimates similarity and containment metrics.
@@ -44,25 +44,30 @@ Sourmash signatures contain one or multiple sub-sampled representations of DNA o
 > /home/e_sukhinina/.local/bin/sourmash compare -p 32 ./signatures/*.sig -o ./sourmash_results/serra_cmp --distance-matrix --ksize 31 --csv ./sourmash_results/dist_matrix.csv
 ```
 
+The phylogenetic tree was reconstructed using a hierarchical clustering algorithm from the r stats package and ggtree package
+```
+dd <- as.dist(d)     # d - distance matrix
+hclust_avg <- hclust(dd, method='average')
+p1 <- ggtree(hclust_avg, layout="circular") 
+plot(p1)
+```
 
+#### Phylogenetic tree annotation
+The resulting phylogenetic tree was annotated according to the following parameters: attributed species, nearest species, taxonomy check status, type strain. We used ANI_report_prokaryotes.txt from the ncbi database to obtain this data:
+https://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/
+ANI_report_prokaryotes.txt provides Average Nucleotide Identity (ANI) data that can be used to evaluate the taxonomic identity of genome assemblies of interest.  Also included is the ANI status which GenBank uses as a basis for decisions about taxonomic identity of public genome assemblies. Specific methods used can be found here: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6978984/  
+This file contains ANI data for all latest archaeal & bacterial genome assemblies in GenBank, together with the paired RefSeq genome assemblies when they exist.  
+Accessing the data 5 April 2023.  
+Reconstruction of an annotated tree. The annotation layers were superimposed manually in Adobe Photoshop, as there are too many genomes to build a clear heatmap.
+```
+p1 <- ggtree(hclust_avg, layout="circular") %<+% tax_table +
+  geom_tippoint(aes(color=declared_species), size=6)+ 
+  scale_color_manual(values = custom.col)
+plot(p1)
+```
+The information on the type strains was taken from the NCBI taxonomy page: https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Undef&id=613&lvl=3&keep=1&srchmode=1&unlock  
+After clicking on the name of the species (species, not strain), we got a link to Genome in the table at the top right of the page. Clicking on it provided the Genbank ID of the assembly for the reference strain. It is important to note that the type strains are not available for all species. We have not considered unclassified Serratia, only the major species.
 
+![alt text](https://github.com/shkot190819/serratia/blob/main/tree.jpg?raw=true)
 
-
-
-
-ANI_report_prokaryotes.txt provides Average Nucleotide Identity (ANI) data 
-that can be used to evaluate the taxonomic identity of genome assemblies of 
-interest.  Also included is the ANI status which GenBank uses as a basis for
-decisions about taxonomic identity of public genome assemblies. 
-
-Specific methods used can be found here:  
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6978984/
-
-This file contains ANI data for all latest archaeal & bacterial genome 
-assemblies in GenBank, together with the paired RefSeq genome assemblies when 
-they exist. 
-
-ANI_report_prokaryotes.txt replaces the prototype file ANI_report_bacteria.txt.  
-ANI_report_bacteria.txt is no longer being updated and will be removed after
-31st May 2020.
 
