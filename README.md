@@ -182,7 +182,7 @@ raxml-ng --threads 30 --msa align_SNP.aln.snp_sites.aln --model JC
 ```
 
 ##### Result tree
-![alt text](https://github.com/shkot190819/serratia/blob/main/20230502_tree.jpg?raw=true)
+![alt text](https://github.com/shkot190819/serratia/blob/main/20230502_tree_.jpg?raw=true)
 
 ### Conclusions
 - S. marcescens assemblies, which has not been taxonomically verified by the NCBI, is taxonomically reassigned to the Serratia nevei isolated in 2020.
