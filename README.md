@@ -1,4 +1,4 @@
-# Taxonomy of the genus Serratia
+# Taxonomy of the genus *Serratia*
 Author:  
 - Ekaterina Sukhinina  
 
@@ -8,13 +8,13 @@ Supervisors:
 
 
 ### Introduction  
-In 2020 two new species of the genus Serratia were identified - Serratia nevei and S. bockelmannii. These species were categorized based on their biochemical and morphological characteristics. A phylogenetic tree was constructed using a limited set of genomes. It was found that many genomes annotated as S. marcescens likely belong to the two new species that were identified. These new species have not yet been officially recognized by taxonomists and are listed as not taxonomically validated in the NCBI database.  
+In 2020 two new species of the genus *Serratia* were identified - *S. nevei* and *S. bockelmannii*. These species were categorized based on their biochemical and morphological characteristics. A phylogenetic tree was constructed using a limited set of genomes. It was found that many genomes annotated as *S. marcescens* likely belong to the two new species that were identified. These new species have not yet been officially recognized by taxonomists and are listed as not taxonomically validated in the NCBI database.  
 
 #### Aim: 
-To investigate whether the subdivision into species of the genus Serratia is consistent with the actual phylogeny
+To investigate whether the subdivision into species of the genus *Serratia* is consistent with the actual phylogeny
 
 #### Objectives:
-- Download the Serratia genomes from the NCBI Assembly database
+- Download the *Serratia* genomes from the NCBI Assembly database
 - Construct a distance matrix between genomic assemblies using sourmash
 - Build a table with the declared species and the closest species according to the distance matrix 
 - Construct a phylogenetic tree based on the distance matrix.
@@ -22,7 +22,10 @@ To investigate whether the subdivision into species of the genus Serratia is con
 - Determine at the genomic level the relevance of distinguishing new Serratis species. Determine the pangenome features of these species.  
 
 
-### Workflow  
+### Workflow 
+The main methods and software are presented in the figure below:  
+![alt text](https://github.com/shkot190819/serratia/blob/main/workflow_cheme.png?raw=true)
+
 #### Uploading genomic assemblies
 Get ids for all assemblies from ncbi_assembly by 'serratia' query:  
 ```
@@ -33,7 +36,7 @@ ids = record['IdList']
 ```
 2449 ids (Date of access: 13.03.23)  
 
-A python script (script.py) was written to download genomic assemblies from GenBank.
+A python script [download_assemblies.py](download_assemblies.py) was written to download genomic assemblies from GenBank.
 
 #### Reconstruction of a phylogenetic tree based on a distance matrix  
 A distance matrix between genomic assemblies was constructed using [sourmash](https://github.com/sourmash-bio/sourmash).  
@@ -185,14 +188,14 @@ raxml-ng --threads 30 --msa align_SNP.aln.snp_sites.aln --model JC
 ![alt text](https://github.com/shkot190819/serratia/blob/main/20230502_tree_.jpg?raw=true)
 
 ### Conclusions
-- S. marcescens assemblies, which has not been taxonomically verified by the NCBI, is taxonomically reassigned to the Serratia nevei isolated in 2020.
-- Serratia bockelmannii is not a separate species and can be considered as S. marcescens
+- *S. marcescens* assemblies, which has not been taxonomically verified by the NCBI, is taxonomically reassigned to the *Serratia nevei* isolated in 2020.
+- *Serratia bockelmannii* is not a separate species and can be considered as *S. marcescens*
 
-Some Serratia species do not form a monophyletic group and the classification of the genus needs revision.
+The *S. marcescens* group was found to contain a significant clade, which has been identified as *S. nevei*, suggesting a potential novel taxonomic entity within the genus *Serratia*. These observations underscore the need for a comprehensive revision of the current taxonomy of this genus.
 
 
 ### Literature
-Cho, G. S., Stein, M., Brinks, E., Rathje, J., Lee, W., Suh, S. H., & Franz, C. M. A. P. (2020). Serratia nevei sp. nov. and Serratia bockelmannii sp. nov., isolated from fresh produce in Germany and reclassification of Serratia marcescens subsp. sakuensis Ajithkumar et al. 2003 as a later heterotypic synonym of Serratia marcescens subsp. marcescens. Systematic and applied microbiology, 43(2), 126055. https://doi.org/10.1016/j.syapm.2020.126055  
+Cho, G. S., Stein, M., Brinks, E., Rathje, J., Lee, W., Suh, S. H., & Franz, C. M. A. P. (2020). *Serratia nevei sp. nov.* and *Serratia bockelmannii sp. nov.*, isolated from fresh produce in Germany and reclassification of *Serratia marcescens* subsp. *sakuensis* Ajithkumar et al. 2003 as a later heterotypic synonym of Serratia marcescens subsp. marcescens. Systematic and applied microbiology, 43(2), 126055. https://doi.org/10.1016/j.syapm.2020.126055  
 
 Brown et al, (2016), sourmash: a library for MinHash sketching of DNA, Journal of Open Source Software, 1(5), 27, doi:10.21105/joss.00027  
 
