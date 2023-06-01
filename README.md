@@ -43,8 +43,8 @@ A distance matrix between genomic assemblies was constructed using [sourmash](ht
 Sourmash is a Python package that quickly compares potentially very large sets of DNA and protein sequences. This functionality can be used to, for example, cluster transcriptomes or genomes, to identify the taxonomy of new isolate or metagenome-assembled genomes, or to determine the taxonomic composition of a new metagenome sequence by comparing it against a database of reference genomes.  
 Sourmash signatures contain one or multiple sub-sampled representations of DNA or protein sequences (FracMinHash sketches). Each FracMinHash sketch contains hashes (and optionally, hash abundances) that represent a subset of k-mers from the original sequences. The sourmash sketch command consistently subsamples k-mers across different sequences, so we can compare (e.g. intersect) sketches to understand sequence similarity. The command line function sourmash compare estimates similarity and containment metrics.
 ```
-> sourmash sketch dna -p scaled=1000,k=31 ../assemblies/*.fna.gz
-> sourmash compare -p 32 ./signatures/*.sig -o ./sourmash_results/serra_cmp --distance-matrix --ksize 31 --csv ./sourmash_results/dist_matrix.csv
+sourmash sketch dna -p scaled=1000,k=31 ../assemblies/*.fna.gz
+sourmash compare -p 32 ./signatures/*.sig -o ./sourmash_results/serra_cmp --distance-matrix --ksize 31 --csv ./sourmash_results/dist_matrix.csv
 ```
 
 The phylogenetic tree was reconstructed using a [hierarchical clustering](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/hclust) algorithm from the r stats package and [ggtree](https://guangchuangyu.github.io/software/ggtree/) package
@@ -78,7 +78,7 @@ After clicking on the name of the species (species, not strain), we got a link t
 Annotation errors, fragmented assemblies and contamination represent a major challenge for pangenome analysis. We have used [Panaroo](https://gtonkinhill.github.io/panaroo/#/) to tackle these challenges using a sophisticated framework for error correction that leverages information across strains through a population graph-based pangenome representation.  
 To run panaroo, we converted the assemblies downloaded from genbank twice. The first conversion was done with the [bp_genbank2gff3.pl script](https://manpages.ubuntu.com/manpages/focal/en/man1/bp_genbank2gff3.1p.html). This script uses Bio::SeqFeature::Tools::Unflattener and Bio::Tools::GFF to convert GenBank flatfiles to GFF3 with gene containment hierarchies mapped for optimal display in gbrowse.
 ```
-> bp_genbank2gff3 *.gbff -o ../2gff_annotations
+bp_genbank2gff3 *.gbff -o ../2gff_annotations
 ```
 For the second conversion we used the convert_refseq_to_prokka_gff.py script, which can be found among the panaroo software scripts.  
 The converted .gff files smaller than 1 Mb were deleted and not included in the further comparison. 
