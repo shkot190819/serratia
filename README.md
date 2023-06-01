@@ -137,7 +137,7 @@ All done in 5308.67 minutes.
 
 File importation_status.txt contains the list of reconstructed recombination events. There is one line for each event, the first column indicates the branch on which the event was found, and the second and third columns indicate the first and last genomic positions affected by the recombination event. 
 
-![alt text](https://github.com/shkot190819/serratia/blob/main/ClonalFrameML_output_file.png?raw=true)
+![alt text](https://github.com/shkot190819/serratia/blob/main/ClonalFrameML_output_file_.png?raw=true)
 
 All nodes were given the same name, sorted by start and end columns, and then used the bedtools to merge all recombination ranges
 ```
@@ -154,7 +154,7 @@ for record in alignment:
         record.seq = record.seq[:s] + record.seq[e:]
 AlignIO.write(alignment, '../clonal/align_wo_rec.fasta', 'fasta')
 ```
-The code is provided in the [delete_recombinations.ipynb](delete_recombinations.ipynb) 
+The code with comments is provided in the [delete_recombinations.ipynb](delete_recombinations.ipynb) 
 
 According to the metrics calculated with ClonalFramemML, the effect size ratio for recombination events versus mutations is 1.2. However, a very large proportion of the original alignments have been removed. 
 The overestimation of regions associated with recombination is probably due to the fact that we are working with different species within a genus. Regions close to individual species are marked as recombinant, hence this method is better suited to more clonal bacterial populations. However, we have found that the level of recombination in the genus Serratia is quite low, so we do not need to remove these regions. The next part of the analysis must be repeated for alignment without removing recombinations to make a final conclusion. This step is now in the process of selecting the optimal evolutionary model. The alignment is very large, so the processing at each stage takes days. 
