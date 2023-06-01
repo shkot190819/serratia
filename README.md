@@ -135,7 +135,7 @@ Wrote inferred importation status to serra.importation_status.txt
 Wrote processed tree to serra.labelled_tree.newick                              
 All done in 5308.67 minutes. 
 
-File importation_status.txt contains the list of reconstructed recombination events. There is one line for each event, the first column indicates the branch on which the event was found, and the second and third columns indicate the first and last genomic positions affected by the recombination event. 
+File `importation_status.txt` contains the list of reconstructed recombination events. There is one line for each event, the first column indicates the branch on which the event was found, and the second and third columns indicate the first and last genomic positions affected by the recombination event. 
 
 ![alt text](https://github.com/shkot190819/serratia/blob/main/ClonalFrameML_output_file_.png?raw=true)
 
