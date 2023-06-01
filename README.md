@@ -76,7 +76,7 @@ After clicking on the name of the species (species, not strain), we got a link t
 #### Reconstruction of a phylogenetic tree based on a core gene alignment
 ##### Format conversion
 Annotation errors, fragmented assemblies and contamination represent a major challenge for pangenome analysis. We have used [Panaroo](https://gtonkinhill.github.io/panaroo/#/) to tackle these challenges using a sophisticated framework for error correction that leverages information across strains through a population graph-based pangenome representation.  
-To run panaroo, we converted the assemblies downloaded from genbank twice. The first conversion was done with the [bp_genbank2gff3.pl script](https://manpages.ubuntu.com/manpages/focal/en/man1/bp_genbank2gff3.1p.html). This script uses Bio::SeqFeature::Tools::Unflattener and Bio::Tools::GFF to convert GenBank flatfiles to GFF3 with gene containment hierarchies mapped for optimal display in gbrowse.
+To run panaroo, we converted the assemblies downloaded from genbank twice. The first conversion was done with the [bp_genbank2gff3.pl script](https://manpages.ubuntu.com/manpages/focal/en/man1/bp_genbank2gff3.1p.html). 
 ```
 bp_genbank2gff3 *.gbff -o ../2gff_annotations
 ```
@@ -88,18 +88,14 @@ Run panaroo on the converted files:
 ```
 panaroo -i *.gff -o ./results/ --clean-mode strict -a core -t 32
 ```
-  --clean-mode {strict,moderate,sensitive}
-                        strict:
-                        Requires fairly strong evidence (present in  at least
-                        5% of genomes) to keep likely contaminant genes. Will
-                        remove genes that are refound more often than they were
-                        called originally.
-  -a {core,pan}, --alignment {core,pan}  
-                        Output alignments of core genes or all genes. Options
-                        are 'core' and 'pan'
-  --aligner {prank,clustal,mafft}
-                        Specify an aligner. Options:'prank', 'clustal', and
-                        default: 'mafft'
+> --clean-mode {strict, moderate, sensitive}    
+&nbsp;&nbsp;&nbsp;&nbsp;The stringency mode at which to run panaroo. Must be one of 'strict', 'moderate' or 'sensitive'. Each of these modes can be fine tuned using the additional parameters in the 'Graph correction' section. 'strict' requires fairly strong evidence (present in  at least 5% of genomes) to keep likely contaminant genes. Will remove genes that are refound more often than they were called originally. 'moderate' requires moderate evidence (present in  at least 1% of genomes) to keep likely contaminant genes. Keeps genes that are refound more often than they were called originally. 'sensitive' does not delete any genes and only performes merge and refinding operations. Useful if rare plasmids are of interest as these are often hard to disguish from contamination. Results will likely include  higher number of spurious annotations.  
+-a {core, pan}, --alignment {core,pan}  
+&nbsp;&nbsp;&nbsp;&nbsp;Output alignments of core genes or all genes. Options are 'core' and 'pan'  
+> --aligner {prank, clustal, mafft}  
+&nbsp;&nbsp;&nbsp;&nbsp;Specify an aligner. Options:'prank', 'clustal', and default: 'mafft'  
+    
+
 
 ##### Clear the alignment of ambiguously defined bases 
 Next, clear the alignment of ambiguously defined bases (N, U, etc., anything that is not a normal base). We replaced these bases with the most common normal base in that position throughout the alignment. If the part of the alignment has N everywhere and gaps in all other sequences, then such sections were removed. An appropriate script was provided to me to clear the alignment. Since I didn't write it myself, I didn't attach it to the repository. 
@@ -119,8 +115,9 @@ The starting tree was generated from the alignment using [FastTree](https://bioc
 ```
 fasttree -gtr -nt core_gene_alignment_copy.fixed.fasta > fast_tree.tre
 ```
--gtr -- generalized time-reversible model (nucleotide alignments only)  
--nt -- fasttree  supports  fasta  or  phylip  interleaved  alignments  
+> -gtr -- generalized time-reversible model (nucleotide alignments only)  
+> -nt -- fasttree  supports  fasta  or  phylip  interleaved  alignments  
+
 By default fasttree expects protein alignments,  use -nt for nucleotides fasttree reads standard  input if no alignment file is given
                         
 Polytomy was observed in the constructed tree. ClonalFrameML does not work with trees containing polytomy. To overcome this obstacle, we used the [ete3](http://etetoolkit.org/docs/latest/tutorial/tutorial_trees.html) package for python. When a tree contains a polytomy (a node with more than 2 children), the method resolve_polytomy() can be used to convert the node into a randomly bifurcated structure in which branch lengths are set to 0. This is really not a solution for the polytomy but it allows to export the tree as a strictly bifurcated newick structure, which is a requirement for some external software.
@@ -129,7 +126,8 @@ Run ClonalFrameML:
 ```
 ClonalFrameML ../binary_tree_ete.nw ../core_gene_alignment_copy.fixed.fasta serra
 ```
-serra - output_prefix (running ClonalFrameML produces several output files, each of which starts with the output_prefix specified in the command line)  
+> serra - output_prefix (running ClonalFrameML produces several output files, each of which starts with the output_prefix specified in the command line)  
+
 Output: 
 Wrote inferred importation status to serra.importation_status.txt               
 Wrote processed tree to serra.labelled_tree.newick                              
@@ -164,10 +162,10 @@ The overestimation of regions associated with recombination is probably due to t
 ```
 snp-sites -mvp -o align_SNP.aln align_wo_rec.fasta
 ```
- -m     output a multi fasta alignment file (default)  
+> -m     output a multi fasta alignment file (default)  
  -v     output a VCF file  
  -p     output a phylip file  
- -o STR specify an output filename [STDOUT]  
+> -o STR specify an output filename [STDOUT]  
 
 
 ##### Evolutionary model
@@ -188,7 +186,7 @@ Partition 1/1:
 The JC phylogenetic model is a simple model of DNA evolution which uses a single rate parameter to describe the probability of nucleotide substitution. It assumes that all nucleotide positions are equally likely to undergo substitution and that the rate of substitution is constant throughout the evolutionary history of the sequences being analyzed. Despite its simplicity, the JC model has been widely used in phylogenetic analyses of DNA sequence data and can provide a useful baseline for more complex evolutionary models.
 
 ##### Phylogenetic tree building
-[RAxML-NG](https://github.com/amkozlov/raxml-ng) is a phylogenetic tree inference tool which uses maximum-likelihood (ML) optimality criterion. Its search heuristic is based on iteratively performing a series of Subtree Pruning and Regrafting (SPR) moves, which allows to quickly navigate to the best-known ML tree.
+[RAxML-NG](https://github.com/amkozlov/raxml-ng) is a phylogenetic tree inference tool which uses maximum-likelihood (ML) optimality criterion.
 ```
 raxml-ng --threads 30 --msa align_SNP.aln.snp_sites.aln --model JC
 ```
