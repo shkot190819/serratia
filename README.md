@@ -149,12 +149,12 @@ All recombinations combined into 479 ranges.
 alignment = AlignIO.read(open("../core_gene_alignment_copy.fixed.fasta"), "fasta")
 for record in alignment:
     for i in range(len(recomb_merged)-1,-1,-1):
-        s = recomb_merged.loc[:,1][i]-1               # s - start   (index in python -1)
-        e = recomb_merged.loc[:,2][i]                #  without -1 - not include end coordinate  
+        s = recomb_merged.loc[:,1][i]-1              
+        e = recomb_merged.loc[:,2][i]                 
         record.seq = record.seq[:s] + record.seq[e:]
 AlignIO.write(alignment, '../clonal/align_wo_rec.fasta', 'fasta')
 ```
-The code used is provided in the Ipynb file [delete_recombinations.ipynb](delete_recombinations.ipynb) 
+The code is provided in the [delete_recombinations.ipynb](delete_recombinations.ipynb) 
 
 According to the metrics calculated with ClonalFramemML, the effect size ratio for recombination events versus mutations is 1.2. However, a very large proportion of the original alignments have been removed. 
 The overestimation of regions associated with recombination is probably due to the fact that we are working with different species within a genus. Regions close to individual species are marked as recombinant, hence this method is better suited to more clonal bacterial populations. However, we have found that the level of recombination in the genus Serratia is quite low, so we do not need to remove these regions. The next part of the analysis must be repeated for alignment without removing recombinations to make a final conclusion. This step is now in the process of selecting the optimal evolutionary model. The alignment is very large, so the processing at each stage takes days. 
