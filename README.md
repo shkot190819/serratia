@@ -98,7 +98,7 @@ panaroo -i *.gff -o ./results/ --clean-mode strict -a core -t 32
 
 
 ##### Clear the alignment of ambiguously defined bases 
-Next, clear the alignment of ambiguously defined bases (N, U, etc., anything that is not a normal base). We replaced these bases with the most common normal base in that position throughout the alignment. If the part of the alignment has N everywhere and gaps in all other sequences, then such sections were removed. An appropriate script was provided to me to clear the alignment. Since I didn't write it myself, I didn't attach it to the repository. 
+Next, clear the alignment of ambiguously defined bases (N, U, etc., anything that is not a normal base). We replaced these bases with the most common normal base in that position throughout the alignment. If the part of the alignment has N everywhere and gaps in all other sequences, then such sections were removed. The required script was provided to me by my supervisor. [clean_from_amb_sites.py](clean_from_amb_sites.py)
 ```
 python3 clean_from_amb_sites.py -f core_gene_alignment_copy.aln
 ```
